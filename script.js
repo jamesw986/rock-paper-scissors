@@ -36,6 +36,16 @@ function playRound(playerSelection, computerSelection) {
     }
 }
 
-const playerSelection = "Rock";
-const computerSelection = computerPlay();
-console.log(playRound(playerSelection, computerSelection));
+function game() {
+    while (true) {
+        const playerSelection = window.prompt("Rock, paper or scissors?");
+        if (playerSelection === "quit") {
+            console.log("Thanks for playing!");
+            break;
+        }
+
+        const computerSelection = computerPlay();
+        console.log(playRound(playerSelection, computerSelection));
+    }
+}
+
