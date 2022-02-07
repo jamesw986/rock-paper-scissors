@@ -12,72 +12,105 @@ function computerPlay() {
 
 function playRound(playerSelection, computerSelection) {
     // Plays one round
-    let playerSelectionL = playerSelection.toLowerCase();
-    if (playerSelectionL === computerSelection) {
-        return `Draw, you both selected ${playerSelectionL}`
+    if (playerSelection === computerSelection) {
+        console.log(`Draw, you both selected ${playerSelection}`);
     }
-    if (playerSelectionL === "rock") {
+    if (playerSelection === "rock") {
         if (computerSelection === "paper") {
-            return "You lose, paper covers rock!";
+            console.log("You lose, paper covers rock!");
+            compScore++;
+            updateCompScore();
+
         } else if (computerSelection === "scissors") {
-            return "You win, rock crushes scissors!";
+            console.log("You win, rock crushes scissors!");
+            playerScore++;
+            updatePlayerScore();
         }
-    } else if (playerSelectionL === "paper") {
+    } else if (playerSelection === "paper") {
         if (computerSelection === "rock") {
-            return "You win, paper covers rock!";
+            console.log("You win, paper covers rock!");
+            playerScore++;
+            updatePlayerScore();
+
         } else if (computerSelection === "scissors") {
-            return "You lose, scissors cuts paper!";
+            console.log("You lose, scissors cuts paper!");
+            compScore++;
+            updateCompScore();
         }
     } else {
         if (computerSelection === "rock") {
-            return "You lose, rock crushes scissors!";
+            console.log("You lose, rock crushes scissors!");
+            compScore++;
+            updateCompScore();
+
         } else if (computerSelection === "paper") {
-            return "You win, scissors cuts paper";
+            console.log("You win, scissors cuts paper");
+            playerScore++;
+            updatePlayerScore();
         }
     }
 }
 
-function game() {
-    // Runs game on a loop until told to quit
-    while (true) {
-        let playerSelection = window.prompt("Rock, paper or scissors?");
-        let playerSelectionL = playerSelection.toLowerCase();
-
-        if (playerSelectionL === "quit") {
-            console.log("Thanks for playing!");
-            break;
-        }
-
-        if (playerSelectionL !== "rock" && playerSelectionL !== "paper" && playerSelectionL !== "scissors") {
-            console.log("Please enter rock, paper or scissors only.");
-            continue;
-        }
-
-        const computerSelection = computerPlay();
-        console.log(playRound(playerSelection, computerSelection));
-
-        const playChoice = window.prompt("Would you like to play again? yes/no");
-        if (playChoice !== "yes" && playChoice !== "no") {
-            console.log("Please answer yes or no only.");
-            continue;
-        } else if (playChoice === "no") {
-            console.log("Ok, goodbye!");
-            break;
-        } else {
-            continue;
-        }
-    }
+function updatePlayerScore() {
+    let playerScoreDiv = document.querySelector('div[id=player-score]');
+    playerScoreDiv.innerText = `Player score: ${playerScore.toString()}`;
 }
 
-while (true) {
-    const playChoice = window.prompt("Would you like to play? yes/no");
-    if (playChoice !== "yes" && playChoice !== "no") {
-        console.log("Please answer yes or no only.");
-        continue;
-    } else if (playChoice === "no") {
-        console.log("Ok, goodbye!");
-        break;
+function updateCompScore() {
+    let compScoreDiv = document.querySelector('div[id=comp-score]');
+    compScoreDiv.innerText = `Computer score: ${compScore.toString()}`;
+}
+
+// Play round when button is clicked
+let compScore = 0;
+let playerScore = 0;
+let winnerDiv = document.querySelector('div[id=declare-winner]');
+let container = document.querySelector('div[id=container');
+updatePlayerScore();
+updateCompScore();
+
+const buttons = document.querySelectorAll('button');
+buttons.forEach(button => {
+    button.addEventListener('click', function() {
+        let computerSelection = computerPlay();
+        playRound(button.id, computerSelection);
+        if (playerScore === 5 || compScore === 5) {
+            declareWinner();
+        }
+    })
+});
+
+// Reset scores and clear screen of any winner logs
+function resetGame() {
+    compScore = 0;
+    playerScore = 0;
+    updatePlayerScore();
+    updateCompScore();
+    winnerDiv.innerText = '';
+    container.style.display = 'contents';
+}
+
+function addYesNoButtons() {
+    // Add yes button and reset game when clicked
+    let yesButton = document.createElement('button');
+    yesButton.innerText = 'Yes';
+    winnerDiv.appendChild(yesButton);
+    yesButton.addEventListener('click', function () {
+        resetGame();
+    });
+
+}
+
+// Print winner declaration to screen and prompt to play again
+function declareWinner() {
+    if (playerScore > compScore) {
+        winnerDiv.innerText = `You win! You beat the computer 5 points to ${compScore}! Want to play again? `;
+
     } else {
-        game();
+        winnerDiv.innerText = `You lose...the computer beat you 5 points to ${playerScore}! Want to play again? `;
     }
+    container.style.display = 'none';
+    addYesNoButtons();
 }
+
+resetGame();
