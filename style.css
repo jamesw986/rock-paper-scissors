@@ -1,4 +1,31 @@
 body {
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
+}
+
+.options {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+}
+
+button {
+    border-radius: 12.5%;
+    background-color: rgb(135, 141, 222);
+}
+
+button:hover {
+    padding: 6px 12px;
+    background-color: burlywood;
+    border-radius: 12.5%;
+}
+
+.scores {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
 }

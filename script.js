@@ -1,3 +1,14 @@
+// Initial declarations
+let compScore = 0;
+let playerScore = 0;
+let winnerDiv = document.querySelector('div[id=declare-winner]');
+let container = document.querySelector('div[id=container');
+let message = document.querySelector('div[id=game-message]');
+updatePlayerScore();
+updateCompScore();
+
+
+
 function computerPlay() {
     // Randomly returns "rock", "paper" or "scissors" to simulate a computer player
     let x = Math.floor(Math.random() * 3) + 1;
@@ -13,38 +24,38 @@ function computerPlay() {
 function playRound(playerSelection, computerSelection) {
     // Plays one round
     if (playerSelection === computerSelection) {
-        console.log(`Draw, you both selected ${playerSelection}`);
+        message.innerText = `Draw, you both selected ${playerSelection}`;
     }
     if (playerSelection === "rock") {
         if (computerSelection === "paper") {
-            console.log("You lose, paper covers rock!");
+            message.innerText = "You lose, paper covers rock!";
             compScore++;
             updateCompScore();
 
         } else if (computerSelection === "scissors") {
-            console.log("You win, rock crushes scissors!");
+            message.innerText = "You win, rock crushes scissors!";
             playerScore++;
             updatePlayerScore();
         }
     } else if (playerSelection === "paper") {
         if (computerSelection === "rock") {
-            console.log("You win, paper covers rock!");
+            message.innerText = "You win, paper covers rock!";
             playerScore++;
             updatePlayerScore();
 
         } else if (computerSelection === "scissors") {
-            console.log("You lose, scissors cuts paper!");
+            message.innerText = "You lose, scissors cuts paper!";
             compScore++;
             updateCompScore();
         }
     } else {
         if (computerSelection === "rock") {
-            console.log("You lose, rock crushes scissors!");
+            message.innerText = "You lose, rock crushes scissors!";
             compScore++;
             updateCompScore();
 
         } else if (computerSelection === "paper") {
-            console.log("You win, scissors cuts paper");
+            message.innerText = "You win, scissors cuts paper";
             playerScore++;
             updatePlayerScore();
         }
@@ -61,14 +72,8 @@ function updateCompScore() {
     compScoreDiv.innerText = `Computer score: ${compScore.toString()}`;
 }
 
-// Play round when button is clicked
-let compScore = 0;
-let playerScore = 0;
-let winnerDiv = document.querySelector('div[id=declare-winner]');
-let container = document.querySelector('div[id=container');
-updatePlayerScore();
-updateCompScore();
 
+// Click event runs game
 const buttons = document.querySelectorAll('button');
 buttons.forEach(button => {
     button.addEventListener('click', function() {
@@ -90,15 +95,14 @@ function resetGame() {
     container.style.display = 'contents';
 }
 
+// Add yes button and reset game when clicked
 function addYesNoButtons() {
-    // Add yes button and reset game when clicked
     let yesButton = document.createElement('button');
     yesButton.innerText = 'Yes';
     winnerDiv.appendChild(yesButton);
     yesButton.addEventListener('click', function () {
         resetGame();
     });
-
 }
 
 // Print winner declaration to screen and prompt to play again
@@ -109,7 +113,8 @@ function declareWinner() {
     } else {
         winnerDiv.innerText = `You lose...the computer beat you 5 points to ${playerScore}! Want to play again? `;
     }
-    container.style.display = 'none';
+    container.style.display = 'none';   // Hide RPS buttons - easier than removing click event
+    message.innerText = '';
     addYesNoButtons();
 }
 
