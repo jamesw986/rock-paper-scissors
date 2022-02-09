@@ -99,7 +99,7 @@ function resetGame() {
 
 function addPlayAgainButton() {
     let playAgainBtn = document.createElement('button');
-    playAgainBtn.innerText = 'Play Again?';
+    playAgainBtn.innerText = 'Play Again';
     winnerDiv.appendChild(playAgainBtn);
     winnerDiv.style.display = 'flex';
     winnerDiv.style.flexDirection = 'column';
