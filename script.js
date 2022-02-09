@@ -1,7 +1,7 @@
 // Initial declarations
 let compScore = 0;
 let playerScore = 0;
-let winnerDiv = document.querySelector('div[id=declare-winner]');
+let winnerDiv = document.querySelector('.winner');
 let container = document.querySelector('div[id=container');
 let message = document.querySelector('div[id=game-message]');
 updatePlayerScore();
@@ -72,17 +72,19 @@ function updateCompScore() {
     compScoreDiv.innerText = `Computer score: ${compScore.toString()}`;
 }
 
+function getPlayerChoice(e) {
+    let computerSelection = computerPlay();
+    playRound(e.target.id, computerSelection);
+    if (playerScore === 5 || compScore === 5) {
+        declareWinner();
+    }
+}
+
 
 // Click event runs game
 const buttons = document.querySelectorAll('button');
 buttons.forEach(button => {
-    button.addEventListener('click', function() {
-        let computerSelection = computerPlay();
-        playRound(button.id, computerSelection);
-        if (playerScore === 5 || compScore === 5) {
-            declareWinner();
-        }
-    })
+    button.addEventListener('click', getPlayerChoice)
 });
 
 // Reset scores and clear screen of any winner logs
@@ -95,13 +97,18 @@ function resetGame() {
     container.style.display = 'contents';
 }
 
-// Add yes button and reset game when clicked
-function addYesNoButtons() {
-    let yesButton = document.createElement('button');
-    yesButton.innerText = 'Yes';
-    winnerDiv.appendChild(yesButton);
-    yesButton.addEventListener('click', function () {
-        resetGame();
+function addPlayAgainButton() {
+    let playAgainBtn = document.createElement('button');
+    playAgainBtn.innerText = 'Play Again?';
+    winnerDiv.appendChild(playAgainBtn);
+    winnerDiv.style.display = 'flex';
+    winnerDiv.style.flexDirection = 'column';
+    winnerDiv.style.alignItems = 'center';
+    winnerDiv.style.margin = '12px';
+    playAgainBtn.style.width = 'auto';
+    playAgainBtn.style.margin = '12px';
+    playAgainBtn.addEventListener('click', function () {
+        location.reload();
     });
 }
 
@@ -113,9 +120,9 @@ function declareWinner() {
     } else {
         winnerDiv.innerText = `You lose...the computer beat you 5 points to ${playerScore}! Want to play again? `;
     }
-    container.style.display = 'none';   // Hide RPS buttons - easier than removing click event
     message.innerText = '';
-    addYesNoButtons();
+    buttons.forEach(button => {button.removeEventListener('click', getPlayerChoice)});
+    addPlayAgainButton();
 }
 
 resetGame();
